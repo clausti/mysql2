@@ -119,10 +119,22 @@ module Mysql2
         Thread.handle_interrupt(::Mysql2::Util::TimeoutError => :never) do
           _query(sql, @query_options.merge(options))
         end
+      rescue Mysql2::Error => e
+        match_data = /\AUnknown column\ '(.*)\..*in\ 'field list'/.match(e.message)
+        if match_data
+          md[1].classify.constantize.reset_column_information
+        end
+        raise e
       end
     else
       def query(sql, options = {})
         _query(sql, @query_options.merge(options))
+      rescue Mysql2::Error => e
+        match_data = /\AUnknown column\ '(.*)\..*in\ 'field list'/.match(e.message)
+        if match_data
+          md[1].classify.constantize.reset_column_information
+        end
+        raise e
       end
     end
 
