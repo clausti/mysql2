@@ -121,7 +121,7 @@ module Mysql2
         end
       rescue Mysql2::Error => e
         binding.pry
-        pattern = Regexp.new("\\AUnknown column\\ '(.*)\\..*in\\ 'field list'".encode(e.message.encoding))
+        pattern = Regexp.new("\\AUnknown column\\ '(.*)\\..*in\\ ".encode(e.message.encoding))
         match_data = pattern.match(e.message)
         if match_data
           md[1].classify.constantize.reset_column_information
