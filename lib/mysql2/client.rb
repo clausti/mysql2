@@ -120,6 +120,7 @@ module Mysql2
           _query(sql, @query_options.merge(options))
         end
       rescue Mysql2::Error => e
+        binding.pry
         pattern = Regexp.new("\\AUnknown column\\ '(.*)\\..*in\\ 'field list'".encode(e.message.encoding))
         match_data = pattern.match(e.message)
         if match_data
