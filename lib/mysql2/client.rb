@@ -124,7 +124,7 @@ module Mysql2
         pattern = Regexp.new("\\AUnknown column\\ '(.*)\\..*in\\ ".encode(e.message.encoding))
         match_data = pattern.match(e.message)
         if match_data
-          md[1].classify.constantize.reset_column_information
+          match_data[1].classify.constantize.reset_column_information
         end
         raise e
       end
